@@ -1,0 +1,13 @@
+# Ignore el-get (it will be downloaded/setup automatically)
+el-get/*
+
+# Ignore compiled and generated files
+*.elc
+ac-comphist.dat
+.yas-compiled-snippets.el
+eshell/history
+eshell/lastdir
+
+# Ignore backups
+backup/*
+auto-save-list/*

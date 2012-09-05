@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: x: function x() {
+# key: fn
+# --
+${1:name}: function $1(${2:args}) {
+  $0
+},

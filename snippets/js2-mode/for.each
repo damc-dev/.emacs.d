@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for each...in
+# key: for
+# --
+for each (var $1 in $2) {
+  $0
+}

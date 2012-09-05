@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: if (inline)
+# key: if
+# --
+if (${1:true}) $0

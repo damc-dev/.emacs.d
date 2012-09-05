@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: if-else
+# key: if
+# --
+if (${1:true}) {
+  $0
+} else {
+}
