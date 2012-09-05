@@ -13,8 +13,16 @@
 ;; init directory
 (setq-default el-get-user-package-directory "~/.emacs.d/init-files/")
 
-;; Sync
+;; sync
 (el-get 'sync)
+
+;; packages
+(el-get-install "auto-complete-yasnippet")
+(el-get-install "color-theme-twilight")
+(el-get-install "google-c-style")
+(el-get-install "js-comint")
+(el-get-install "js2-mode")
+(el-get-install "magit")
 
 ;;; Customizations
 ;; Custom panel setup and maximize
@@ -30,7 +38,8 @@
 (setq eshell-rc-script "~/.emacs.d/eshell/profile")
 
 ;; Magit Projects
-(setq magit-repo-dirs '("~/Projects"))
+(setq magit-repo-dirs '("~/Projects"
+                        "~/.emacs.d"))
 
 ;; Hotkeys to move back and forth between frames
 (global-set-key (kbd "C-o") 'other-window)
