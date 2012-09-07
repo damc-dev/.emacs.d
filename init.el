@@ -51,35 +51,39 @@
 ;;; General
 ;; Backup
 (setq backup-directory-alist `(("." . "~/.emacs.d/backup"))
-  backup-by-copying t   ; Don't delink hardlinks
-  version-control t     ; Use version numbers on backups
-  delete-old-version t  ; Automatically delete excess backups
-  kept-new-versions 20  ; how many of the newest versions to keep
-  kept-old-versions 5   ; and how many of the old
-  )
+      backup-by-copying t   ; Don't delink hardlinks
+      version-control t     ; Use version numbers on backups
+      delete-old-version t  ; Automatically delete excess backups
+      kept-new-versions 20  ; how many of the newest versions to keep
+      kept-old-versions 5   ; and how many of the old
+      )
 
 ;; Auto-save
 (setq auto-save-file-name-transforms
-  `((".*" ,"~/.emacs.d/auto-save/" t)))
+      `((".*" ,"~/.emacs.d/auto-save/" t)))
 
 ;;; Display
-;; Set theme
-(color-theme-twilight)
 
 ;; Column number mode
 (setq-default column-number-mode t)
 (setq column-number-mode t)
 
-;; No scrollbars
-(scroll-bar-mode -1)
-
-;; No toolbar
+;; Setup window
 (add-hook 'window-setup-hook
           (lambda ()
-            (tool-bar-mode -1)))
-
-;; Fringe only on right
-(set-fringe-mode '(0 nil))
+            (if window-system
+                (progn
+                  ;; No scrollbars
+                  (scroll-bar-mode -1)
+                  ;; No toolbar
+                  (tool-bar-mode -1)
+                  ;; Fringe only on right
+                  (set-fringe-mode '(0 nil))
+                  ;; Set theme
+                  (color-theme-twilight))
+              (progn 
+                ;; Set console-friendly theme
+                (color-theme-euphoria)))))
 
 ;; Show bad whitespace
 (global-whitespace-mode 1)
@@ -113,7 +117,7 @@
 ;; Allow code folding on javascript
 (add-hook 'js2-mode-hook
           (lambda ()
-            ; Scan the file for nested code blocks
+            ;; Scan the file for nested code blocks
             (imenu-add-menubar-index)
-            ; Activate the folding mode
+            ;; Activate the folding mode
             (hs-minor-mode t)))
