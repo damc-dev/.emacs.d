@@ -10,4 +10,5 @@ eshell/lastdir
 
 # Ignore backups
 backup/*
+auto-save/*
 auto-save-list/*
