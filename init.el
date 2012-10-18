@@ -30,6 +30,9 @@
 (require 'rmg-panels)
 (require 'rmg-maximize)
 (global-set-key (kbd "C-x C-1") 'rmg-setup-windows)
+(global-set-key (kbd "C-x C-!") 'rmg-setup-windows)
+(global-set-key (kbd "C-x C-2") 'rmg-setup-windows-2)
+(global-set-key (kbd "C-x C-@") 'rmg-setup-windows-2)
 
 ;; Load eshell
 (require 'eshell)
@@ -81,7 +84,7 @@
                   (set-fringe-mode '(0 nil))
                   ;; Set theme
                   (color-theme-twilight))
-              (progn 
+              (progn
                 ;; Set console-friendly theme
                 (color-theme-euphoria)))))
 

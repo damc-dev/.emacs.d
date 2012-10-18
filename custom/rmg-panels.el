@@ -19,6 +19,19 @@
   (setq rmg-temporary-window-top (nth 2 (window-list)))
   (setq rmg-temporary-window-bot (nth 3 (window-list))))
 
+(defun rmg-setup-windows-2 ()
+  (interactive)
+  (switch-to-buffer "*scratch*")
+  (delete-other-windows)
+  (split-window-horizontally)
+  (balance-windows)
+  (other-window 1)
+  (split-window)
+  (other-window -1)
+  (enlarge-window-horizontally (- 80 (window-width)))
+  (setq rmg-temporary-window-top (nth 1 (window-list)))
+  (setq rmg-temporary-window-bot (nth 2 (window-list))))
+
 (setq rmg-temporary-window-top 'nil)
 (setq rmg-temporary-window-bot 'nil)
 
