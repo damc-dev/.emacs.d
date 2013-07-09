@@ -27,7 +27,7 @@
 ;;; Customizations
 ;; Custom panel setup and maximize
 (add-to-list 'load-path "~/.emacs.d/custom")
-(require 'rmg-panels)
+(require 'rmg-panels-v2)
 (require 'rmg-maximize)
 (global-set-key (kbd "C-x C-1") 'rmg-setup-windows)
 (global-set-key (kbd "C-x C-!") 'rmg-setup-windows)
@@ -81,7 +81,7 @@
                   ;; No toolbar
                   (tool-bar-mode -1)
                   ;; Fringe only on right
-                  (set-fringe-mode '(0 nil))
+                  (set-fringe-mode '(0 . 8))
                   ;; Set theme
                   (color-theme-twilight))
               (progn

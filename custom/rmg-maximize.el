@@ -10,12 +10,13 @@
   (w32-send-sys-command 61488))
 
 ;; Maximize automatically on reaper2-nfs
-(if (string= "reaper2-nfs" (system-name))
-    (add-hook 'window-setup-hook
-              (lambda ()
-                (case window-system
-                  (x (rmg-x11-maximize-frame))
-                  (w32 (rmg-w32-maximize-frame))))
-              t))
+(dolist (name '("reaper2.*" "niub30"))
+  (if (string-match name (system-name))
+      (add-hook 'window-setup-hook
+                (lambda ()
+                  (case window-system
+                    (x (rmg-x11-maximize-frame))
+                    (w32 (rmg-w32-maximize-frame))))
+                t)))
 
 (provide 'rmg-maximize)
