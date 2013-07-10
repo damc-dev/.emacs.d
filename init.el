@@ -53,6 +53,7 @@
 
 ;;; General
 ;; Backup
+(make-directory "~/.emacs.d/backup" t)
 (setq backup-directory-alist `(("." . "~/.emacs.d/backup"))
       backup-by-copying t   ; Don't delink hardlinks
       version-control t     ; Use version numbers on backups
@@ -62,6 +63,8 @@
       )
 
 ;; Auto-save
+(make-directory "~/.emacs.d/auto-save" t)
+(make-directory "~/.emacs.d/auto-save-list" t)
 (setq auto-save-file-name-transforms
       `((".*" ,"~/.emacs.d/auto-save/" t)))
 
