@@ -1,15 +1,16 @@
 # Ignore el-get (it will be downloaded/setup automatically)
-el-get/*
+/el-get/*
 
 # Ignore compiled and generated files
 *.elc
-ac-comphist.dat
-.yas-compiled-snippets.el
-eshell/history
-eshell/lastdir
-url/*
+/.yas-compiled-snippets.el
+/ac-comphist.dat
+/eshell/history
+/eshell/lastdir
+/smex-items
+/url/*
 
 # Ignore backups
-backup/*
-auto-save/*
-auto-save-list/*
+/backup/*
+/auto-save/*
+/auto-save-list/*

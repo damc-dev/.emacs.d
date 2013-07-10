@@ -7,22 +7,48 @@
   (url-retrieve
    "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
    (lambda (s)
-     (goto-char (point-max))
+     (end-of-buffer)
      (eval-print-last-sexp))))
 
-;; init directory
+;; el-get package directory
 (setq-default el-get-user-package-directory "~/.emacs.d/init-files/")
 
-;; sync
-(el-get 'sync)
+;; custom recipes
+(setq el-get-sources
+      '((:name color-theme-twilight
+               :after (progn
+                        (if window-system
+                            (progn
+                              (add-hook 'window-setup-hook
+                                        (lambda ()
+                                          (color-theme-twilight))
+                                        t)
+                              (color-theme-twilight))
+                          (color-theme-euphoria))))
+        (:name magit
+               :after (progn
+                        (global-set-key (kbd "C-x C-z") 'magit-status)))
+        (:name smex
+               :after (progn
+                        (setq smex-save-file "~/.emacs.d/smex-items")
+                        (global-set-key (kbd "M-x") 'smex)
+                        ; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+               ))
+        ))
 
-;; packages
-(el-get-install "auto-complete-yasnippet")
-(el-get-install "color-theme-twilight")
-(el-get-install "google-c-style")
-(el-get-install "js-comint")
-(el-get-install "js2-mode")
-(el-get-install "magit")
+;; base packages
+(setq rmg:el-get-packages
+      '(auto-complete-yasnippet
+        color-theme-twilight
+        el-get
+        google-c-style
+        js-comint
+        js2-mode
+        magit
+        smex))
+
+;; sync
+(el-get 'sync rmg:el-get-packages)
 
 ;;; Customizations
 ;; Custom panel setup and maximize
@@ -70,26 +96,20 @@
 
 ;;; Display
 
-;; Column number mode
-(setq-default column-number-mode t)
-(setq column-number-mode t)
+;; Line and Column number mode
+(line-number-mode 1)
+(column-number-mode 1)
 
 ;; Setup window
 (add-hook 'window-setup-hook
           (lambda ()
-            (if window-system
-                (progn
+            (when window-system
                   ;; No scrollbars
                   (scroll-bar-mode -1)
                   ;; No toolbar
                   (tool-bar-mode -1)
                   ;; Fringe only on right
-                  (set-fringe-mode '(0 . 8))
-                  ;; Set theme
-                  (color-theme-twilight))
-              (progn
-                ;; Set console-friendly theme
-                (color-theme-euphoria)))))
+                  (set-fringe-mode '(0 . 8)))))
 
 ;; Show bad whitespace
 (global-whitespace-mode 1)
