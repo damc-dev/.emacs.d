@@ -56,7 +56,7 @@
 (setq backup-directory-alist `(("." . "~/.emacs.d/backup"))
       backup-by-copying t   ; Don't delink hardlinks
       version-control t     ; Use version numbers on backups
-      delete-old-version t  ; Automatically delete excess backups
+      delete-old-versions t ; Automatically delete excess backups
       kept-new-versions 20  ; how many of the newest versions to keep
       kept-old-versions 5   ; and how many of the old
       )
@@ -91,8 +91,8 @@
 ;; Show bad whitespace
 (global-whitespace-mode 1)
 (setq-default whitespace-style '(face
-                                 tabs
                                  trailing
+                                 tabs
                                  lines-tail
                                  empty
                                  indentation
@@ -102,7 +102,7 @@
 
 ;;; Base Behavior
 ;; Never insert tabs automatically
-(setq-default indent-tabs-mode 'nil)
+(setq-default indent-tabs-mode nil)
 
 ;; Default to 2 spaces
 (setq-default c-basic-offset 2)
@@ -123,4 +123,4 @@
             ;; Scan the file for nested code blocks
             (imenu-add-menubar-index)
             ;; Activate the folding mode
-            (hs-minor-mode t)))
+            (hs-minor-mode 1)))
