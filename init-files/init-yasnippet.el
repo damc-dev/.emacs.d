@@ -1,7 +1,7 @@
 ;; Load yasnippet
 (require 'yasnippet)
 
-;; Shut up. Seriously. Wayyyy to spammy
+;; Shut up. Seriously. Wayyyy too spammy
 (setq yas-verbosity 0)
 
 ;; Yas should work everywhere

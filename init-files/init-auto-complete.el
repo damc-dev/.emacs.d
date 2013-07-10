@@ -7,8 +7,8 @@
 (setq-default ac-sources (add-to-list 'ac-sources 'ac-source-yasnippet))
 
 (global-auto-complete-mode t)      ; enable global-mode
-(setq ac-auto-start 1)             ; automatically start after 1 character
-(setq ac-auto-show-menu 4)         ; automatically show menu after 4 seconds
-(setq ac-ignore-case nil)          ; case-specific
+(setq ac-auto-start 1              ; automatically start after 1 character
+      ac-auto-show-menu 4          ; automatically show menu after 4 seconds
+      ac-ignore-case nil)          ; case-specific
 
 (provide 'init-auto-complete)
