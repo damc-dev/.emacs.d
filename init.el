@@ -73,6 +73,9 @@
   (add-to-list 'load-path "~/.emacs.d/custom")
   (require 'rmg-panels-v2)
   (require 'rmg-maximize)
+  (require 'rmg-host-specific)
+
+  ;; Hotkeys for standard window setups
   (global-set-key (kbd "C-x C-1") 'rmg-setup-windows)
   (global-set-key (kbd "C-x C-!") 'rmg-setup-windows)
   (global-set-key (kbd "C-x C-2") 'rmg-setup-windows-2)
