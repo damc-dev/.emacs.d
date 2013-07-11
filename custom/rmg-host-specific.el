@@ -10,7 +10,8 @@
   ;; Add window setup hook for face size
   (add-hook 'window-setup-hook
             (lambda ()
-              (set-face-attribute 'default nil :height rmg:font-height))
+              (when window-system
+                (set-face-attribute 'default nil :height rmg:font-height)))
             t)
 
   ;; Maximize automatically for specific hosts
