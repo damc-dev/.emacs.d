@@ -11,7 +11,7 @@
 
 ;;; User info
   (setq user-full-name "Robert Grimm"
-        user-mail-address (concat "grimm" ".rob@" "gmail" ".com")
+        user-mail-address (concat "grimm" ".rob@" "gmail" ".com"))
 
 ;;; Package Installation Setup
   ;; el-get directory
@@ -175,7 +175,6 @@
   ;; UTF-8
   (set-language-environment 'utf-8)
   (prefer-coding-system 'utf-8)
-  (set-terminal-encoding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
   (setq locale-coding-system 'utf-8)
   (set-selection-coding-system 'utf-8)
@@ -223,8 +222,7 @@
   (load custom-file 'noerror)
 
   ;; Start the emacs server for emacsclient
-  (server-start)
-
+  ;;(server-start)
 
 ;;; End
 )
