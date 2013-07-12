@@ -144,7 +144,7 @@
                           (setq yas/root-directory '("~/.emacs.d/snippets"))
 
                           ;; Also load from the default
-                          (add-to-list yas/root-directory
+                          (add-to-list 'yas/root-directory
                                        (concat default-directory "snippets")
                                        t)
 
@@ -293,11 +293,18 @@
   (setq mouse-yank-at-point t)
 
   ;; Additional hideshow hotkeys
-  (define-key hs-minor-mode-map (kbd "C-c h H") 'hs-hide-all)
-  (define-key hs-minor-mode-map (kbd "C-c h S") 'hs-show-all)
-  (define-key hs-minor-mode-map (kbd "C-c h h") 'hs-hide-block)
-  (define-key hs-minor-mode-map (kbd "C-c h s") 'hs-show-block)
-  (define-key hs-minor-mode-map (kbd "C-c h t") 'hs-toggle-hiding)
+  (add-hook 'hs-minor-mode-hook (lambda ()
+                                  (when hs-minor-mode
+                                    (define-key hs-minor-mode-map
+                                      (kbd "C-c h H") 'hs-hide-all)
+                                    (define-key hs-minor-mode-map
+                                      (kbd "C-c h S") 'hs-show-all)
+                                    (define-key hs-minor-mode-map
+                                      (kbd "C-c h h") 'hs-hide-block)
+                                    (define-key hs-minor-mode-map
+                                      (kbd "C-c h s") 'hs-show-block)
+                                    (define-key hs-minor-mode-map
+                                      (kbd "C-c h t") 'hs-toggle-hiding))))
 
   ;; Don't use this init.el for customizations
   (setq custom-file "~/.emacs.d/custom.el")
