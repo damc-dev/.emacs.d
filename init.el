@@ -9,6 +9,10 @@
                              magit
                              smex)))
 
+;;; User info
+  (setq user-full-name "Robert Grimm"
+        user-mail-address (concat "grimm" ".rob@" "gmail" ".com")
+
 ;;; Package Installation Setup
   ;; el-get directory
   (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -28,11 +32,11 @@
   (setq el-get-sources
         '((:name color-theme-twilight
                  :after (progn
+                          (color-theme-initialize)
                           (if window-system
                               (progn
                                 (add-hook 'window-setup-hook
-                                          (lambda ()
-                                            (color-theme-twilight))
+                                          #'color-theme-twilight
                                           t)
                                 (color-theme-twilight))
                             (color-theme-euphoria))))
@@ -55,11 +59,20 @@
                                       (hs-minor-mode 1)))))
           (:name magit
                  :after (progn
-                          (global-set-key (kbd "C-x C-z") 'magit-status)))
+                          ;; Keybinding for magit-status
+                          (global-set-key (kbd "C-x C-z") 'magit-status)
+
+                          ;; Magit Projects
+                          (setq magit-repo-dirs '("~/Projects"
+                                                  "~/.emacs.d"))))
           (:name smex
                  :after (progn
+                          ;; Save file
                           (setq smex-save-file "~/.emacs.d/smex-items")
+
+                          ;; Keybinding (replace default M-x)
                           (global-set-key (kbd "M-x") 'smex)
+
                           ;; (global-set-key (kbd "M-X")
                           ;;                'smex-major-mode-commands)
                           ))
@@ -87,10 +100,6 @@
   (setq eshell-login-script "~/.emacs.d/eshell/login")
   (setq eshell-rc-script "~/.emacs.d/eshell/profile")
 
-  ;; Magit Projects
-  (setq magit-repo-dirs '("~/Projects"
-                          "~/.emacs.d"))
-
   ;; Hotkeys to move back and forth between frames
   (global-set-key (kbd "C-o") 'other-window)
   (defun rmg-prev-window ()
@@ -100,7 +109,7 @@
   (global-set-key (kbd "M-o") 'rmg-prev-window)
 
 ;;; General
-  ;; Backup
+  ;; Backup and saves
   (make-directory "~/.emacs.d/backup" t)
   (setq backup-directory-alist `(("." . "~/.emacs.d/backup"))
         backup-by-copying t   ; Don't delink hardlinks
@@ -116,6 +125,10 @@
   (setq auto-save-file-name-transforms
         `((".*" ,"~/.emacs.d/auto-save/" t)))
 
+  ;; Tetris scores
+  (make-directory "~/.emacs.d/games" t)
+  (setq tetris-score-file "~/.emacs.d/games/tetris-scores")
+
 ;;; Display
   ;; No splash screen
   (setq inhibit-splash-screen t)
@@ -124,10 +137,16 @@
   (line-number-mode 1)
   (column-number-mode 1)
 
-  ;; Setup window
+  ;; Setup graphical window
   (add-hook 'window-setup-hook
             (lambda ()
               (when window-system
+                ;; Title format
+                (setq frame-title-format (concat "%b - "
+                                                 (downcase user-login-name)
+                                                 "@"
+                                                 (downcase system-name)))
+
                 ;; No scrollbars
                 (scroll-bar-mode -1)
                 ;; No toolbar
@@ -146,13 +165,66 @@
                                    space-after-tab
                                    space-before-tab))
 
-;;; Base Behavior
+  ;; Don't blink the cursor
+  (blink-cursor-mode -1)
+
+  ;; Always highlight the current line
+  (global-hl-line-mode 1)
+
+;;; Behavior
+  ;; UTF-8
+  (set-language-environment 'utf-8)
+  (prefer-coding-system 'utf-8)
+  (set-terminal-encoding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (setq locale-coding-system 'utf-8)
+  (set-selection-coding-system 'utf-8)
+
+  ;; Default to Chinese pinyin
+  (setq default-input-method 'chinese-py)
+
+  ;; Sentences end with a dot, not with two spaces
+  (setq sentence-end-double-space nil)
+
   ;; Never insert tabs automatically
   (setq-default indent-tabs-mode nil)
 
-  ;; Default spaces for C-style
+  ;; Default space width
+  (setq default-tab-width rmg:indent-spaces)
+  (setq-default tab-width rmg:indent-spaces)
+
   (setq-default c-basic-offset rmg:indent-spaces)
   (setq c-basic-offset rmg:indent-spaces)
+
+  (setq css-indent-offset rmg:indent-spaces)
+
+  (setq-default sh-basic-offset rmg:indent-spaces)
+  (setq-default sh-indentation rmg:indent-spaces)
+
+  (setq-default perl-indent-level rmg:indent-spaces)
+
+  (setq-default js-indent-level rmg:indent-spaces)
+
+  ;; Fill at 79, not 70
+  (setq default-fill-column 79)
+
+  ;; Middle click should paste at cursor position, not mouse position
+  (setq mouse-yank-at-point t)
+
+  ;; Additional hideshow hotkeys
+  (global-set-key (kbd "C-c h H") 'hs-hide-all)
+  (global-set-key (kbd "C-c h S") 'hs-show-all)
+  (global-set-key (kbd "C-c h h") 'hs-hide-block)
+  (global-set-key (kbd "C-c h s") 'hs-show-block)
+  (global-set-key (kbd "C-c h t") 'hs-toggle-hiding)
+
+  ;; Don't use this init.el for customizations
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file 'noerror)
+
+  ;; Start the emacs server for emacsclient
+  (server-start)
+
 
 ;;; End
 )
