@@ -45,9 +45,10 @@
                           (global-auto-complete-mode 1)
 
                           ;; Other settings
-                          (setq ac-auto-start 1        ; start after 1 char
-                                ac-auto-show-menu 4    ; show menu after 4 sec
-                                ac-ignore-case nil)))  ; case-specific
+                          (setq ac-auto-show-menu 4    ; show menu after 4 sec
+                                ac-auto-start 1        ; start after 1 char
+                                ac-ignore-case nil     ; case-specific
+                                ac-use-menu-map t)))   ; hotkeys in ac options
           (:name auto-complete-emacs-lisp
                  :after (progn
                           ;; Include emacs-lisp-features in autocomplete options
