@@ -1,7 +1,6 @@
 ;;; Initialization Config
 (let ((rmg:indent-spaces 2)
-      (rmg:el-get-packages '(auto-complete-yasnippet
-                             el-get)))
+      (rmg:el-get-packages '(el-get)))
 
 ;;; User info
   (setq user-full-name "Robert Grimm"
@@ -24,7 +23,48 @@
 
   ;; custom recipes
   (setq el-get-sources
-        '((:name color-theme-twilight
+        '((:name auto-complete
+                 :after (progn
+                          ;; Load auto-complete
+                          (require 'auto-complete-config)
+
+                          ;; Autocomplete dictionary directory
+                          (make-directory "~/.emacs.d/ac-dicts" t)
+                          (add-to-list 'ac-dictionary-directories
+                                       "~/.emacs.d/ac-dicts")
+
+                          ;; Include dictionaries as autocomplete sources
+                          (add-to-list 'ac-sources
+                                       'ac-source-dictionary)
+
+                          ;; ac-sources becomes buffer local when changed
+                          ;; so set the new value as default too
+                          (setq-default ac-sources ac-sources)
+
+                          ;; Autocomplete in every buffer
+                          (global-auto-complete-mode 1)
+
+                          ;; Other settings
+                          (setq ac-auto-start 1        ; start after 1 char
+                                ac-auto-show-menu 4    ; show menu after 4 sec
+                                ac-ignore-case nil)))  ; case-specific
+          (:name auto-complete-emacs-lisp
+                 :after (progn
+                          ;; Include emacs-lisp-features in autocomplete options
+                          (add-to-list 'ac-sources
+                                       'ac-source-emacs-lisp-features)
+
+                          ;; Set default (see auto-complete)
+                          (setq-default ac-sources ac-sources)))
+          (:name auto-complete-yasnippet
+                 :after (progn
+                          ;; Include yasnippet into autocomplete options
+                          (add-to-list 'ac-sources
+                                       'ac-source-yasnippet)
+
+                          ;; Set default (see auto-complete)
+                          (setq-default ac-sources ac-sources)))
+          (:name color-theme-twilight
                  :after (progn
                           (color-theme-initialize)
                           (if window-system
@@ -92,12 +132,33 @@
                           ;; (global-set-key (kbd "M-X")
                           ;;                'smex-major-mode-commands)
                           ))
+          (:name yasnippet
+                 :after (progn
+                          ;; Shut up. Seriously. Wayyyyy too spammy
+                          (setq yas-verbosity 0)
+
+                          ;; Yas should work everywhere
+                          (yas-global-mode 1)
+
+                          ;; Save new snippets into .emacs.d/snippets
+                          (setq yas/root-directory '("~/.emacs.d/snippets"))
+
+                          ;; Also load from the default
+                          (add-to-list yas/root-directory
+                                       (concat default-directory "snippets")
+                                       t)
+
+                          ;; Load snippets automatically
+                          (mapc 'yas/load-directory yas/root-directory)
+
+                          ;; Set the display style to match auto-complete
+                          (setq yas-prompt-functions '(yas-dropdown-prompt))))
           ))
 
   ;; Include local sources into rmg:el-get-packages
   (setq rmg:el-get-packages
-	(append rmg:el-get-packages
-		(mapcar 'el-get-source-name el-get-sources)))
+        (append rmg:el-get-packages
+                (mapcar 'el-get-source-name el-get-sources)))
 
   ;; Initialize el-get synchronously
   (el-get 'sync rmg:el-get-packages)
