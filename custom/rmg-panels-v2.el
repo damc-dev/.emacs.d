@@ -51,6 +51,7 @@
                              "^\\*Help\\*$"
                              "^\\*Locate\\*$"
                              "^\\*eshell"
+                             "^\\*js\\*$"
                              "^\\*local variables\\*$"))
   (add-to-list 'display-buffer-alist
                (cons buffer-regexp-top

@@ -1,13 +1,7 @@
 ;;; Initialization Config
 (let ((rmg:indent-spaces 2)
       (rmg:el-get-packages '(auto-complete-yasnippet
-                             color-theme-twilight
-                             el-get
-                             google-c-style
-                             js-comint
-                             js2-mode
-                             magit
-                             smex)))
+                             el-get)))
 
 ;;; User info
   (setq user-full-name "Robert Grimm"
@@ -40,6 +34,24 @@
                                           t)
                                 (color-theme-twilight))
                             (color-theme-euphoria))))
+          (:name google-c-style
+                 :after (progn
+                          ;; Auto-start google C style
+                          (add-hook 'c-mode-common-hook 'google-set-c-style)))
+          (:name jade-mode
+                 :website "https://github.com/brianc/jade-mode#readme"
+                 :type github
+                 :pkgname "brianc/jade-mode"
+                 :prepare (progn
+                            (autoload 'sws-mode "sws-mode.el"
+                              "Significant WhiteSpace Mode; see sws-mode.el." t)
+                            (autoload 'jade-mode "jade-mode.el"
+                              "JADE mode; see jade-mode.el" t))
+                 :after (progn
+                          (add-to-list 'auto-mode-alist
+                                       '("\\.styl$" . sws-mode))
+                          (add-to-list 'auto-mode-alist
+                                       '("\\.jade$" . jade-mode))))
           (:name js2-mode
                  :after (progn
                           ;; Set all declaractions to pretty print
@@ -57,6 +69,10 @@
                                       (imenu-add-menubar-index)
                                       ;; Activate the folding mode
                                       (hs-minor-mode 1)))))
+          (:name js-comint
+                 :after (progn
+                          ;; Prevent node from using readline
+                          (setenv "NODE_NO_READLINE" "1")))
           (:name magit
                  :after (progn
                           ;; Keybinding for magit-status
@@ -77,6 +93,11 @@
                           ;;                'smex-major-mode-commands)
                           ))
           ))
+
+  ;; Include local sources into rmg:el-get-packages
+  (setq rmg:el-get-packages
+	(append rmg:el-get-packages
+		(mapcar 'el-get-source-name el-get-sources)))
 
   ;; Initialize el-get synchronously
   (el-get 'sync rmg:el-get-packages)
