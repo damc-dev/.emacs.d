@@ -3,7 +3,7 @@
 
 # Ignore compiled and generated files
 *.elc
-/.yas-compiled-snippets.el
+.yas-compiled-snippets.el
 /ac-comphist.dat
 /eshell/history
 /eshell/lastdir
