@@ -250,8 +250,9 @@
   ;; Don't blink the cursor
   (blink-cursor-mode -1)
 
-  ;; Always highlight the current line
-  (global-hl-line-mode 1)
+  ;; Highlight the current line when GUI
+  (when window-system
+    (global-hl-line-mode 1))
 
 ;;; Behavior
   ;; UTF-8
@@ -305,6 +306,12 @@
                                       (kbd "C-c h s") 'hs-show-block)
                                     (define-key hs-minor-mode-map
                                       (kbd "C-c h t") 'hs-toggle-hiding))))
+
+  ;; Use <select> as a keybinding for end-of-line (end key over SSH)
+  (unless window-system
+    (global-set-key (kbd "<select>") (lambda ()
+                                       (interactive)
+                                       (move-end-of-line 1))))
 
   ;; Don't use this init.el for customizations
   (setq custom-file "~/.emacs.d/custom.el")
