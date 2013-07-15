@@ -9,6 +9,7 @@
 /eshell/lastdir
 /smex-items
 /url/*
+/tramp
 
 # Ignore backups
 /backup/*
