@@ -50,9 +50,12 @@
                              "^\\*Compile-Log\\*$"
                              "^\\*Help\\*$"
                              "^\\*Locate\\*$"
-                             "^\\*eshell"
+                             ;; shell and eshell
+                             "^\\*e?shell"
+                             ;; js comint
                              "^\\*js\\*$"
-                             "^\\*local variables\\*$"))
+                             "^\\*local variables\\*$"
+                             "^\\*magit-diff"))
   (add-to-list 'display-buffer-alist
                (cons buffer-regexp-top
                      (cons #'(lambda (buffer &optional data)
