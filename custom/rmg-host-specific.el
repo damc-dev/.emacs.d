@@ -10,7 +10,7 @@
   ;; Add window setup hook for face size
   (add-hook 'window-setup-hook
             (lambda ()
-              (when window-system
+              (when (display-graphic-p)
                 (set-face-attribute 'default nil :height rmg:font-height)))
             t)
 

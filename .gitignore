@@ -7,9 +7,10 @@
 /ac-comphist.dat
 /eshell/history
 /eshell/lastdir
+/ido.last
 /smex-items
-/url/*
 /tramp
+/url/*
 
 # Ignore backups
 /backup/*

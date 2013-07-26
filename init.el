@@ -1,14 +1,14 @@
 ;;; Initialization Config
 (let ((rmg:indent-spaces 2)
-      (rmg:el-get-packages '(el-get)))
+      (rmg:el-get-packages '(el-get ido-ubiquitous)))
 
 ;;; User info
   (setq user-full-name "Robert Grimm"
-        user-mail-address (concat "grimm" ".rob@" "gmail" ".com"))
+        user-mail-address (rot13 "tevzz.ebo@tznvy.pbz"))
 
 ;;; Package Installation Setup
   ;; el-get directory
-  (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+  (add-to-list 'load-path (concat user-emacs-directory "el-get/el-get"))
 
   ;; load
   (unless (require 'el-get nil t)
@@ -19,7 +19,8 @@
        (eval-print-last-sexp)))
 
   ;; el-get package directory
-  (setq-default el-get-user-package-directory "~/.emacs.d/init-files/")
+  (setq-default el-get-user-package-directory (concat user-emacs-directory
+                                                      "init-files/"))
 
   ;; custom recipes
   (setq el-get-sources
@@ -29,9 +30,12 @@
                           (require 'auto-complete-config)
 
                           ;; Autocomplete dictionary directory
-                          (make-directory "~/.emacs.d/ac-dicts" t)
+                          (make-directory (concat user-emacs-directory
+                                                  "ac-dicts/")
+                                          t)
                           (add-to-list 'ac-dictionary-directories
-                                       "~/.emacs.d/ac-dicts")
+                                       (concat user-emacs-directory
+                                               "ac-dicts/"))
 
                           ;; Include dictionaries as autocomplete sources
                           (add-to-list 'ac-sources
@@ -67,18 +71,40 @@
                           (setq-default ac-sources ac-sources)))
           (:name color-theme-twilight
                  :after (progn
-                          (color-theme-initialize)
-                          (if window-system
-                              (progn
-                                (add-hook 'window-setup-hook
-                                          #'color-theme-twilight
-                                          t)
-                                (color-theme-twilight))
-                            (color-theme-euphoria))))
+                          (when (display-color-p)
+                            (color-theme-initialize)
+                            (if (display-graphic-p)
+                                (progn
+                                  (add-hook 'window-setup-hook
+                                            #'color-theme-twilight
+                                            t)
+                                  (color-theme-twilight))
+                              (color-theme-euphoria)))))
           (:name google-c-style
                  :after (progn
                           ;; Auto-start google C style
                           (add-hook 'c-mode-common-hook 'google-set-c-style)))
+          (:name ido-ubiquitous
+                 :after (progn
+                          ;; Auto-start ido-ubiquitous, which is only active
+                          ;; when ido-mode is also active
+                          (require 'ido-ubiquitous)
+
+                          ;; Use ido-mode to find files and buffers
+                          (setq ido-save-directory-list-file
+                                (concat user-emacs-directory "ido.last"))
+                          (ido-mode 1)
+                          (setq ido-auto-merge-work-directories-length -1
+                                ido-enable-dot-prefix t
+                                ido-enable-flex-matching t
+                                ido-enable-regexp t
+                                ido-ignore-extensions t)
+                          (add-to-list 'ido-ignore-directories
+                                       "^\\.$"
+                                       "^node_modules$")
+
+                          ;; Start ido-ubiquitous
+                          (ido-ubiquitous-mode 1)))
           (:name jade-mode
                  :website "https://github.com/brianc/jade-mode#readme"
                  :type github
@@ -121,18 +147,18 @@
 
                           ;; Magit Projects
                           (setq magit-repo-dirs '("~/Projects"
-                                                  "~/.emacs.d"))))
+                                                  user-emacs-directory))))
           (:name smex
                  :after (progn
                           ;; Save file
-                          (setq smex-save-file "~/.emacs.d/smex-items")
+                          (setq smex-save-file (concat user-emacs-directory
+                                                       "smex-items"))
 
                           ;; Keybinding (replace default M-x)
                           (global-set-key (kbd "M-x") 'smex)
 
-                          ;; (global-set-key (kbd "M-X")
-                          ;;                'smex-major-mode-commands)
-                          ))
+                          (global-set-key (kbd "M-X")
+                                          'smex-major-mode-commands)))
           (:name yasnippet
                  :after (progn
                           ;; Shut up. Seriously. Wayyyyy too spammy
@@ -142,11 +168,13 @@
                           (yas-global-mode 1)
 
                           ;; Save new snippets into .emacs.d/snippets
-                          (setq yas/root-directory '("~/.emacs.d/snippets"))
+                          (setq yas/root-directory
+                                (make-list 1 (concat user-emacs-directory
+                                                     "snippets/")))
 
                           ;; Also load from the default
                           (add-to-list 'yas/root-directory
-                                       (concat default-directory "snippets")
+                                       (concat default-directory "snippets/")
                                        t)
 
                           ;; Load snippets automatically
@@ -166,7 +194,7 @@
 
 ;;; Customizations
   ;; Custom panel setup and maximize
-  (add-to-list 'load-path "~/.emacs.d/custom")
+  (add-to-list 'load-path (concat user-emacs-directory "custom"))
   (require 'rmg-panels-v2)
   (require 'rmg-maximize)
   (require 'rmg-host-specific)
@@ -179,9 +207,9 @@
 
   ;; Load eshell
   (require 'eshell)
-  (setq eshell-directory-name "~/.emacs.d/eshell/")
-  (setq eshell-login-script "~/.emacs.d/eshell/login")
-  (setq eshell-rc-script "~/.emacs.d/eshell/profile")
+  (setq eshell-directory-name (concat user-emacs-directory "eshell/"))
+  (setq eshell-login-script (concat eshell-directory-name "login"))
+  (setq eshell-rc-script (concat eshell-directory-name "profile"))
 
   ;; Hotkeys to move back and forth between frames
   (global-set-key (kbd "C-o") 'other-window)
@@ -193,8 +221,9 @@
 
 ;;; General
   ;; Backup and saves
-  (make-directory "~/.emacs.d/backup" t)
-  (setq backup-directory-alist `(("." . "~/.emacs.d/backup"))
+  (make-directory (concat user-emacs-directory "backup/") t)
+  (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
+                                                 "backup/")))
         backup-by-copying t   ; Don't delink hardlinks
         version-control t     ; Use version numbers on backups
         delete-old-versions t ; Automatically delete excess backups
@@ -203,14 +232,14 @@
         )
 
   ;; Auto-save
-  (make-directory "~/.emacs.d/auto-save" t)
-  (make-directory "~/.emacs.d/auto-save-list" t)
+  (make-directory (concat user-emacs-directory "auto-save/") t)
+  (make-directory (concat user-emacs-directory "auto-save-list/") t)
   (setq auto-save-file-name-transforms
-        `((".*" ,"~/.emacs.d/auto-save/" t)))
+        `((".*" ,(concat user-emacs-directory "auto-save/") t)))
 
   ;; Tetris scores
-  (make-directory "~/.emacs.d/games" t)
-  (setq tetris-score-file "~/.emacs.d/games/tetris-scores")
+  (make-directory (concat user-emacs-directory "games/") t)
+  (setq tetris-score-file (concat user-emacs-directory "games/tetris-scores"))
 
 ;;; Display
   ;; No splash screen
@@ -223,7 +252,7 @@
   ;; Setup graphical window
   (add-hook 'window-setup-hook
             (lambda ()
-              (when window-system
+              (when (display-graphic-p)
                 ;; Title format
                 (setq frame-title-format (concat "%b - "
                                                  (downcase user-login-name)
@@ -231,9 +260,11 @@
                                                  (downcase system-name)))
 
                 ;; No scrollbars
-                (scroll-bar-mode -1)
+                (when (fboundp 'scroll-bar-mode)
+                  (scroll-bar-mode -1))
                 ;; No toolbar
-                (tool-bar-mode -1)
+                (when (fboundp 'tool-bar-mode)
+                  (tool-bar-mode -1))
                 ;; Fringe only on right
                 (set-fringe-mode '(0 . 8)))))
 
@@ -251,11 +282,22 @@
   ;; Don't blink the cursor
   (blink-cursor-mode -1)
 
+  ;; Highlight matching parenthesis
+  (show-paren-mode 1)
+  (setq show-paren-style 'mixed)
+
   ;; Highlight the current line when GUI
-  (when window-system
+  (when (display-graphic-p)
     (global-hl-line-mode 1))
 
 ;;; Behavior
+  ;; Set unique file names to filename.txt<distinguishing/path/to>
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
+  ;; Apropos should cover everything
+  (setq apropos-do-all t)
+
   ;; UTF-8
   (set-language-environment 'utf-8)
   (prefer-coding-system 'utf-8)
@@ -263,7 +305,7 @@
   (setq locale-coding-system 'utf-8)
   (set-selection-coding-system 'utf-8)
 
-  ;; Default to Chinese pinyin
+  ;; Default to Chinese pinyin (C-\ is default to toggle IME)
   (setq default-input-method 'chinese-py)
 
   ;; Sentences end with a dot, not with two spaces
@@ -272,7 +314,7 @@
   ;; Never insert tabs automatically
   (setq-default indent-tabs-mode nil)
 
-  ;; Default space width
+  ;; Default indent width of 2-spaces
   (setq default-tab-width rmg:indent-spaces)
   (setq-default tab-width rmg:indent-spaces)
 
@@ -292,7 +334,8 @@
   (setq default-fill-column 79)
 
   ;; Middle click should paste at cursor position, not mouse position
-  (setq mouse-yank-at-point t)
+  (when (display-mouse-p)
+    (setq mouse-yank-at-point t))
 
   ;; Additional hideshow hotkeys
   (add-hook 'hs-minor-mode-hook (lambda ()
@@ -309,17 +352,17 @@
                                       (kbd "C-c h t") 'hs-toggle-hiding))))
 
   ;; Use <select> as a keybinding for end-of-line (end key over SSH)
-  (unless window-system
+  (unless (display-graphic-p)
     (global-set-key (kbd "<select>") (lambda ()
                                        (interactive)
                                        (move-end-of-line 1))))
 
   ;; Don't use this init.el for customizations
-  (setq custom-file "~/.emacs.d/custom.el")
+  (setq custom-file (concat user-emacs-directory "custom.el"))
   (load custom-file 'noerror)
 
   ;; Start the emacs server for emacsclient
-  ;;(server-start)
+  (server-start)
 
 ;;; End
 )
