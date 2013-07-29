@@ -242,8 +242,12 @@
   (make-directory (concat user-emacs-directory "auto-save/") t)
   (make-directory (concat user-emacs-directory "auto-save-list/") t)
   (setq auto-save-file-name-transforms
-        `((".*" ,(concat user-emacs-directory "auto-save/") t))
-        )
+        `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+
+  ;; Save place
+  (require 'saveplace)
+  (setq-default save-place t)
+  (setq save-place-file (concat user-emacs-directory ".places"))
 
   ;; Tetris scores
   (make-directory (concat user-emacs-directory "games/") t)

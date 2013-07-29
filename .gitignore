@@ -11,6 +11,7 @@
 /smex-items
 /tramp
 /url/*
+/.places
 
 # Ignore backups
 /backup/*
