@@ -3,7 +3,7 @@
 (global-set-key (kbd "C-x C-1") 'rmg-setup-windows)
 (global-set-key (kbd "C-x C-!") 'rmg-setup-windows))
 (global-set-key (kbd "C-x C-2") 'rmg-setup-windows-2)
-(global-set-key (kbd "C-x C-@") 'rmg-setup-windows-2))
+(global-set-key (kbd "C-x C-@") 'rmg-setup-windows-2)
 
 ;; Move between windows
 (global-set-key (kbd "C-o") 'other-window)

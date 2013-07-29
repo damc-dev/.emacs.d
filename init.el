@@ -162,8 +162,8 @@
                           (global-set-key (kbd "C-x C-z") 'magit-status)
 
                           ;; Magit Projects
-                          (setq magit-repo-dirs '("~/Projects"
-                                                  user-emacs-directory))))
+                          (setq magit-repo-dirs `("~/Projects"
+                                                  ,user-emacs-directory))))
           (:name smex
                  :after (progn
                           ;; Save file
