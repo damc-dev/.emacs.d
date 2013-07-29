@@ -50,6 +50,8 @@
                              "^\\*Compile-Log\\*$"
                              "^\\*Help\\*$"
                              "^\\*Locate\\*$"
+                             ;; Man pages
+                             "^\\*Man . .+\\*$"
                              "^\\*ediff.*\\*$"
                              ;; shell and eshell
                              "^\\*e?shell"

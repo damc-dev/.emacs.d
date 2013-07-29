@@ -12,6 +12,7 @@
 /tramp
 /url/*
 /.places
+/session.*
 
 # Ignore backups
 /backup/*
