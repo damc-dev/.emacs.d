@@ -99,25 +99,16 @@
                                 (concat user-emacs-directory "ido.last"))
                           (ido-mode 1)
                           (setq ido-auto-merge-work-directories-length -1
-                                ido-enable-dot-prefix t
+                                ;; There's a bug with ido and magit for
+                                ;; .emacs.d, so dot-prefix has to be nil for
+                                ;; now
+                                ido-enable-dot-prefix nil
                                 ido-enable-flex-matching t
                                 ido-enable-regexp t
                                 ido-ignore-extensions t)
                           (add-to-list 'ido-ignore-directories
                                        "^\\.$"
                                        "^node_modules$")
-
-                          ;; Fix ido-ubiquitous for newer packages
-                          (defmacro rmg-ido-ubiq-use-new-completing-read
-                            (cmd package)
-                            `(eval-after-load ,package
-                               '(defadvice ,cmd (around ido-ubiquitous-new
-                                                        activate)
-                                  (let ((ido-ubiquitous-enable-compatibility
-                                         nil))
-                                    ad-do-it))))
-                          (rmg-ido-ubiq-use-new-completing-read webjump
-                                                                'webjump)
 
                           ;; Start ido-ubiquitous
                           (ido-ubiquitous-mode 1)))
@@ -158,8 +149,9 @@
                           (setenv "NODE_NO_READLINE" "1")))
           (:name magit
                  :after (progn
-                          (rmg-ido-ubiq-use-new-completing-read magit-status
-                                                                'magit)
+                          ;; Use ido for magit
+                          (setq magit-completing-read-function
+                                'magit-ido-completing-read)
 
                           ;; Magit Projects
                           (setq magit-repo-dirs `("~/Projects"
