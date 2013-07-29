@@ -35,6 +35,10 @@
 (global-set-key (kbd "C-x M-g") 'browse-url-at-point)
 
 ;;; Conditional Keybindings
+;; Magit
+(when (fboundp 'magit-status)
+  (global-set-key (kbd "C-x C-z") 'magit-status))
+
 ;; Smart M-x
 (when (fboundp 'smex)
   ;; Use Steve Yegge's advice to use C-x C-m

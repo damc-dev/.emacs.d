@@ -158,8 +158,8 @@
                           (setenv "NODE_NO_READLINE" "1")))
           (:name magit
                  :after (progn
-                          ;; Keybinding for magit-status
-                          (global-set-key (kbd "C-x C-z") 'magit-status)
+                          (rmg-ido-ubiq-use-new-completing-read magit-status
+                                                                'magit)
 
                           ;; Magit Projects
                           (setq magit-repo-dirs `("~/Projects"
