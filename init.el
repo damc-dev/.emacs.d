@@ -1,3 +1,7 @@
+;;; Many ideas from:
+;; What the .emacs.d?! (whattheemacsd.com)
+;; Emacks Rocks (emacsrocks.com)
+
 ;;; Initialization Config
 (let ((rmg:indent-spaces 2)
       (rmg:el-get-packages '(el-get ido-ubiquitous)))
@@ -103,6 +107,18 @@
                                        "^\\.$"
                                        "^node_modules$")
 
+                          ;; Fix ido-ubiquitous for newer packages
+                          (defmacro rmg-ido-ubiq-use-new-completing-read
+                            (cmd package)
+                            `(eval-after-load ,package
+                               '(defadvice ,cmd (around ido-ubiquitous-new
+                                                        activate)
+                                  (let ((ido-ubiquitous-enable-compatibility
+                                         nil))
+                                    ad-do-it))))
+                          (rmg-ido-ubiq-use-new-completing-read webjump
+                                                                'webjump)
+
                           ;; Start ido-ubiquitous
                           (ido-ubiquitous-mode 1)))
           (:name jade-mode
@@ -152,13 +168,7 @@
                  :after (progn
                           ;; Save file
                           (setq smex-save-file (concat user-emacs-directory
-                                                       "smex-items"))
-
-                          ;; Keybinding (replace default M-x)
-                          (global-set-key (kbd "M-x") 'smex)
-
-                          (global-set-key (kbd "M-X")
-                                          'smex-major-mode-commands)))
+                                                       "smex-items"))))
           (:name yasnippet
                  :after (progn
                           ;; Shut up. Seriously. Wayyyyy too spammy
@@ -192,32 +202,36 @@
   ;; Initialize el-get synchronously
   (el-get 'sync rmg:el-get-packages)
 
-;;; Customizations
+;;; Customizations and defuns
   ;; Custom panel setup and maximize
   (add-to-list 'load-path (concat user-emacs-directory "custom"))
   (require 'rmg-panels-v2)
   (require 'rmg-maximize)
   (require 'rmg-host-specific)
 
-  ;; Hotkeys for standard window setups
-  (global-set-key (kbd "C-x C-1") 'rmg-setup-windows)
-  (global-set-key (kbd "C-x C-!") 'rmg-setup-windows)
-  (global-set-key (kbd "C-x C-2") 'rmg-setup-windows-2)
-  (global-set-key (kbd "C-x C-@") 'rmg-setup-windows-2)
-
-  ;; Load eshell
-  (require 'eshell)
-  (setq eshell-directory-name (concat user-emacs-directory "eshell/"))
-  (setq eshell-login-script (concat eshell-directory-name "login"))
-  (setq eshell-rc-script (concat eshell-directory-name "profile"))
-
-  ;; Hotkeys to move back and forth between frames
-  (global-set-key (kbd "C-o") 'other-window)
+  ;; Function to move reverse through windows
   (defun rmg-prev-window ()
     "Perform the opposite operation of (other-window)"
     (interactive)
     (other-window -1))
-  (global-set-key (kbd "M-o") 'rmg-prev-window)
+
+  ;; Function to kill region or kill backward a word
+  (defun rmg-kill-region-or-backward-word ()
+    "If a region is active, kill it. Otherwise, kill the previous word."
+    (interactive)
+    (if (region-active-p)
+        (kill-region (region-beginning) (region-end))
+      (backward-kill-word 1)))
+
+  ;; Function to temporarily show line numbers
+  (defun rmg-goto-line-with-feedback ()
+    "Show line numbers temporarily, while prompting for the line number input"
+    (interactive)
+    (unwind-protect
+        (progn
+          (linum-mode 1)
+          (goto-line (read-number "Goto line: ")))
+      (linum-mode -1)))
 
 ;;; General
   ;; Backup and saves
@@ -229,17 +243,25 @@
         delete-old-versions t ; Automatically delete excess backups
         kept-new-versions 20  ; how many of the newest versions to keep
         kept-old-versions 5   ; and how many of the old
+        vc-make-backup-files t; Make backups even when in git/svn/etc
         )
 
   ;; Auto-save
   (make-directory (concat user-emacs-directory "auto-save/") t)
   (make-directory (concat user-emacs-directory "auto-save-list/") t)
   (setq auto-save-file-name-transforms
-        `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+        `((".*" ,(concat user-emacs-directory "auto-save/") t))
+        )
 
   ;; Tetris scores
   (make-directory (concat user-emacs-directory "games/") t)
   (setq tetris-score-file (concat user-emacs-directory "games/tetris-scores"))
+
+  ;; Load eshell
+  (require 'eshell)
+  (setq eshell-directory-name (concat user-emacs-directory "eshell/"))
+  (setq eshell-login-script (concat eshell-directory-name "login"))
+  (setq eshell-rc-script (concat eshell-directory-name "profile"))
 
 ;;; Display
   ;; No splash screen
@@ -279,6 +301,9 @@
                                    space-after-tab
                                    space-before-tab))
 
+  ;; Always font lock
+  (global-font-lock-mode 1)
+
   ;; Don't blink the cursor
   (blink-cursor-mode -1)
 
@@ -289,6 +314,12 @@
   ;; Highlight the current line when GUI
   (when (display-graphic-p)
     (global-hl-line-mode 1))
+
+  ;; Show active region
+  (transient-mark-mode 1)
+  (make-variable-buffer-local 'transient-mark-mode)
+  (put 'transient-mark-mode 'permanent-local t)
+  (setq-default transient-mark-mode t)
 
 ;;; Behavior
   ;; Set unique file names to filename.txt<distinguishing/path/to>
@@ -311,10 +342,21 @@
   ;; Sentences end with a dot, not with two spaces
   (setq sentence-end-double-space nil)
 
+  ;; Automatically revert buffers
+  (global-auto-revert-mode 1)
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil)
+
+  ;; Don't use shift to mark things
+  (setq shift-select-mode nil)
+
+  ;; Transparently open compressed files
+  (auto-compression-mode t)
+
   ;; Never insert tabs automatically
   (setq-default indent-tabs-mode nil)
 
-  ;; Default indent width of 2-spaces
+  ;; Default indent width
   (setq default-tab-width rmg:indent-spaces)
   (setq-default tab-width rmg:indent-spaces)
 
@@ -337,25 +379,8 @@
   (when (display-mouse-p)
     (setq mouse-yank-at-point t))
 
-  ;; Additional hideshow hotkeys
-  (add-hook 'hs-minor-mode-hook (lambda ()
-                                  (when hs-minor-mode
-                                    (define-key hs-minor-mode-map
-                                      (kbd "C-c h H") 'hs-hide-all)
-                                    (define-key hs-minor-mode-map
-                                      (kbd "C-c h S") 'hs-show-all)
-                                    (define-key hs-minor-mode-map
-                                      (kbd "C-c h h") 'hs-hide-block)
-                                    (define-key hs-minor-mode-map
-                                      (kbd "C-c h s") 'hs-show-block)
-                                    (define-key hs-minor-mode-map
-                                      (kbd "C-c h t") 'hs-toggle-hiding))))
-
-  ;; Use <select> as a keybinding for end-of-line (end key over SSH)
-  (unless (display-graphic-p)
-    (global-set-key (kbd "<select>") (lambda ()
-                                       (interactive)
-                                       (move-end-of-line 1))))
+  ;; Load keybindings
+  (require 'rmg-keybindings)
 
   ;; Don't use this init.el for customizations
   (setq custom-file (concat user-emacs-directory "custom.el"))
