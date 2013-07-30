@@ -143,19 +143,10 @@
                                       (imenu-add-menubar-index)
                                       ;; Activate the folding mode
                                       (hs-minor-mode 1)))))
-          (:name js-comint
-                 :after (progn
-                          ;; Prevent node from using readline
-                          (setenv "NODE_NO_READLINE" "1")))
-          (:name magit
-                 :after (progn
-                          ;; Use ido for magit
-                          (setq magit-completing-read-function
-                                'magit-ido-completing-read)
-
-                          ;; Magit Projects
-                          (setq magit-repo-dirs `("~/Projects"
-                                                  ,user-emacs-directory))))
+          ;;(:name js-comint
+          ;;       :after (progn
+          ;;                ;; Prevent node from using readline
+          ;;                (setenv "NODE_NO_READLINE" "1")))
           (:name smex
                  :after (progn
                           ;; Save file
@@ -185,6 +176,20 @@
                           ;; Set the display style to match auto-complete
                           (setq yas-prompt-functions '(yas-dropdown-prompt))))
           ))
+
+  ;; Don't load magit in w32
+  (unless (equal (window-system) 'w32)
+    (add-to-list 'el-get-sources
+		 '(:name magit
+			 :after (progn
+				  ;; Use ido for magit
+				  (setq magit-completing-read-function
+					'magit-ido-completing-read)
+
+				  ;; Magit Projects
+				  (setq magit-repo-dirs `("~/Projects"
+							  ,user-emacs-directory))))))
+
 
   ;; Include local sources into rmg:el-get-packages
   (setq rmg:el-get-packages
