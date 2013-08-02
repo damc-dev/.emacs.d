@@ -180,15 +180,16 @@
   ;; Don't load magit in w32
   (unless (equal (window-system) 'w32)
     (add-to-list 'el-get-sources
-		 '(:name magit
-			 :after (progn
-				  ;; Use ido for magit
-				  (setq magit-completing-read-function
-					'magit-ido-completing-read)
+                 '(:name magit
+                         :after (progn
+                                  ;; Use ido for magit
+                                  (setq magit-completing-read-function
+                                        'magit-ido-completing-read)
 
-				  ;; Magit Projects
-				  (setq magit-repo-dirs `("~/Projects"
-							  ,user-emacs-directory))))))
+                                  ;; Magit Projects
+                                  (setq magit-repo-dirs `("~/Projects"
+                                                          ,user-emacs-directory)
+                                        )))))
 
 
   ;; Include local sources into rmg:el-get-packages
@@ -370,6 +371,7 @@
   (setq-default sh-indentation rmg:indent-spaces)
 
   (setq-default perl-indent-level rmg:indent-spaces)
+  (setq-default python-indent-offset rmg:indent-spaces)
 
   (setq-default js-indent-level rmg:indent-spaces)
 

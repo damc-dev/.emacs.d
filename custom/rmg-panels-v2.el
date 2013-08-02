@@ -52,6 +52,8 @@
                              "^\\*Locate\\*$"
                              ;; Man pages
                              "^\\*Man . .+\\*$"
+                             "^\\*WoMan . .+\\*$"
+
                              "^\\*ediff.*\\*$"
                              ;; shell and eshell
                              "^\\*e?shell"
