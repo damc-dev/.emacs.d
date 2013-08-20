@@ -34,6 +34,14 @@
 (global-set-key (kbd "C-x g") 'webjump)
 (global-set-key (kbd "C-x M-g") 'browse-url-at-point)
 
+;; Make ido-mode lines a little more sane
+(add-hook 'ido-setup-hook
+          (lambda ()
+            (define-key ido-completion-map (kbd "C-o") nil)
+            (define-key ido-completion-map (kbd "M-o") nil)
+            (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+            (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)))
+
 ;;; Conditional Keybindings
 ;; Magit
 (when (fboundp 'magit-status)
