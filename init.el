@@ -205,9 +205,10 @@
                                                      "snippets/")))
 
                           ;; Also load from the default
-                          (add-to-list 'yas/root-directory
-                                       (concat default-directory "snippets/")
-                                       t)
+                          ;; (Disabling these, because they're annoying)
+                          ;; (add-to-list 'yas/root-directory
+                          ;;              (concat default-directory "snippets/")
+                          ;;              t)
 
                           ;; Load snippets automatically
                           (mapc 'yas/load-directory yas/root-directory)
