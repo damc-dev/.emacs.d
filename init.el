@@ -4,23 +4,34 @@
 
 ;;; Initialization Config
 (let ((rmg:indent-spaces 2)
-      (rmg:el-get-packages '(el-get ido-ubiquitous)))
+      (rmg:el-get-packages '(el-get)))
 
 ;;; User info
   (setq user-full-name "Robert Grimm"
         user-mail-address (rot13 "tevzz.ebo@tznvy.pbz"))
 
 ;;; Package Installation Setup
+  ;; ELPA setup
+  (require 'package)
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages")
+               t)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/")
+               t)
+  (package-initialize t)
+
   ;; el-get directory
   (add-to-list 'load-path (concat user-emacs-directory "el-get/el-get"))
 
   ;; load
   (unless (require 'el-get nil t)
     (with-current-buffer
-    (url-retrieve-synchronously
-     "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-       (goto-char (point-max))
-       (eval-print-last-sexp)))
+        (url-retrieve-synchronously
+         "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+      (goto-char (point-max))
+      (let (el-get-master-branch)
+        (eval-print-last-sexp))))
 
   ;; el-get package directory
   (setq-default el-get-user-package-directory (concat user-emacs-directory
@@ -88,6 +99,34 @@
                  :after (progn
                           ;; Auto-start google C style
                           (add-hook 'c-mode-common-hook 'google-set-c-style)))
+          (:name guide-key
+                 :website "https://github.com/kbkbkbkb1/guide-key#readme"
+                 :type github
+                 :pkgname "kbkbkbkb1/guide-key"
+                 :depends (popwin)
+                 :after (progn
+                          ;; Load guide-key immediately
+                          (require 'guide-key)
+
+                          ;; Show guides for certain sets of key bind prefixes
+                          (setq guide-key/guide-key-sequence '("C-x r"
+                                                               "C-x v"
+                                                               "C-x 4"
+                                                               "C-x 5"
+                                                               "C-x 6"
+                                                               "C-x 8"))
+
+                          ;; Show recursively
+                          (setq guide-key/recursive-key-sequence-flag t)
+
+                          ;; Show guide at the bottom
+                          (setq guide-key/popup-window-position 'bottom)
+
+                          ;; Don't show guide-key immediately
+                          (setq guide-key/polling-time 1)
+
+                          ;; Enable guide-key mode
+                          (guide-key-mode 1)))
           (:name ido-ubiquitous
                  :after (progn
                           ;; Auto-start ido-ubiquitous, which is only active
@@ -328,6 +367,10 @@
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
+  ;; Pretty-print eval
+  (global-set-key [remap eval-expression] 'pp-eval-expression)
+  (global-set-key [remap eval-last-sexp] 'pp-eval-last-sexp)
+
   ;; Apropos should cover everything
   (setq apropos-do-all t)
 
@@ -384,6 +427,9 @@
 
   ;; Load keybindings
   (require 'rmg-keybindings)
+
+  ;; Use y-or-n-p instead of yes-or-no-p
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
   ;; Don't use this init.el for customizations
   (setq custom-file (concat user-emacs-directory "custom.el"))

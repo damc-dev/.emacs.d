@@ -2,7 +2,7 @@
 
 ;;; Definition
 ;; Setup custom framework
-(defun rmg-setup-windows ()
+(defun rmg-setup-windows-1 ()
   (interactive)
   (switch-to-buffer "*scratch*")
   (delete-other-windows)
@@ -51,9 +51,8 @@
                              "^\\*Help\\*$"
                              "^\\*Locate\\*$"
                              ;; Man pages
-                             "^\\*Man . .+\\*$"
-                             "^\\*WoMan . .+\\*$"
-
+                             "^\\*Man"
+                             "^\\*WoMan"
                              "^\\*ediff.*\\*$"
                              ;; shell and eshell
                              "^\\*e?shell"
