@@ -1,4 +1,63 @@
 ;;; Global keybindings
+;; Mouse buttons are usually annoying
+(global-set-key [remap mouse-buffer-menu] 'ignore)
+(global-set-key [remap mouse-appearance-menu] 'ignore)
+(global-set-key [remap kmacro-end-call-mouse] 'ignore)
+(global-set-key [remap mouse-set-region] 'ignore)
+(global-set-key [remap mouse-drag-region] 'ignore)
+(global-set-key [remap mouse-save-then-kill] 'ignore)
+(global-set-key [remap mouse-set-secondary] 'ignore)
+(global-set-key [remap mouse-drag-secondary] 'ignore)
+(global-set-key [remap mouse-start-secondary] 'ignore)
+(global-set-key [remap mouse-yank-secondary] 'ignore)
+(global-set-key [remap mouse-secondary-save-then-kill] 'ignore)
+(global-set-key [remap mouse-split-window-vertically] 'ignore)
+(global-set-key [remap mouse-drag-vertical-line] 'ignore)
+(global-set-key [remap mouse-split-window-horizontally] 'ignore)
+(global-set-key [remap mouse-drag-horizontal-line] 'ignore)
+(global-set-key [remap mouse-delete-other-windows] 'ignore)
+(global-set-key [remap mouse-delete-window] 'ignore)
+(global-set-key [remap mouse-drag-mode-line] 'ignore)
+(global-set-key [remap mouse-drag-header-line] 'ignore)
+
+;; And for good measure, remove most bindings as well
+(mapcar #'global-unset-key
+        (mapcar #'kbd
+                '("<double-mouse-1>"
+                  "<triple-mouse-1>"
+                  "<M-mouse-1>"
+                  "<down-mouse-1>"
+                  "<C-down-mouse-1>"
+                  "<S-down-mouse-1>"
+                  "<M-down-mouse-1>"
+                  "<drag-mouse-1>"
+                  "<M-drag-mouse-1>"
+
+                  "<M-mouse-2>"
+                  "<C-down-mouse-2>"
+
+                  "<mouse-3>"
+                  "<M-mouse-3>"
+                  "<S-mouse-3>"
+                  "<C-down-mouse-3>"
+
+                  "<mouse-movement>"
+
+                  "<vertical-line> <mouse-1>"
+                  "<vertical-line> <down-mouse-1>"
+                  "<vertical-line> <C-mouse-2>"
+
+                  "<vertical-scroll-bar> <C-mouse-2>"
+
+                  "<header-line> <mouse-1>"
+                  "<header-line> <down-mouse-1>"
+
+                  "<mode-line> <down-mouse-1>"
+                  "<mode-line> <drag-mouse-1>"
+                  "<mode-line> <mouse-2>"
+                  "<mode-line> <C-mouse-2>"
+                  "<mode-line> <mouse-3>")))
+
 ;; Preferred window layout
 (global-set-key (kbd "C-x C-1") 'rmg-setup-windows-1)
 (global-set-key (kbd "C-x C-!") 'rmg-setup-windows-1)
