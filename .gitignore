@@ -4,14 +4,11 @@
 # Ignore compiled and generated files
 *.elc
 .yas-compiled-snippets.el
-/ac-comphist.dat
+/state/*
 /eshell/history
 /eshell/lastdir
-/ido.last*
-/smex-items
 /tramp
 /url/*
-/.places
 /session.*
 
 # Ignore backups

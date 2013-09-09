@@ -6,11 +6,18 @@
 (let ((rmg:indent-spaces 2)
       (rmg:el-get-packages '(el-get)))
 
+;;; State file directory
+  (setq rmg:state-directory (concat user-emacs-directory "state/"))
+  (make-directory rmg:state-directory t)
+
 ;;; User info
   (setq user-full-name "Robert Grimm"
         user-mail-address (rot13 "tevzz.ebo@tznvy.pbz"))
 
 ;;; Package Installation Setup
+  ;; Store cookies in state
+  (setq url-cookie-file (concat rmg:state-directory "url-cookies"))
+
   ;; ELPA setup
   (require 'package)
   (add-to-list 'package-archives
@@ -51,6 +58,10 @@
                           (add-to-list 'ac-dictionary-directories
                                        (concat user-emacs-directory
                                                "ac-dicts/"))
+
+                          ;; Autocomplete completion history file
+                          (setq ac-comphist-file (concat rmg:state-directory
+                                                         "ac-comphist.dat"))
 
                           ;; Include dictionaries as autocomplete sources
                           (add-to-list 'ac-sources
@@ -95,6 +106,16 @@
                                             t)
                                   (color-theme-twilight))
                               (color-theme-euphoria)))))
+          (:name diminish
+                 :after (progn
+                          (defmacro rmg-rename-modeline (package-name
+                                                         mode
+                                                         &optional new-name)
+                            `(eval-after-load ,package-name
+                               '(defadvice ,mode (after
+                                                  rename-modeline
+                                                  activate)
+                                  (setq mode-name ,new-name))))))
           (:name google-c-style
                  :after (progn
                           ;; Auto-start google C style
@@ -135,7 +156,7 @@
 
                           ;; Use ido-mode to find files and buffers
                           (setq ido-save-directory-list-file
-                                (concat user-emacs-directory "ido.last"))
+                                (concat rmg:state-directory "ido.last"))
                           (ido-mode 1)
                           (setq ido-auto-merge-work-directories-length -1
                                 ;; There's a bug with ido and magit for
@@ -189,7 +210,7 @@
           (:name smex
                  :after (progn
                           ;; Save file
-                          (setq smex-save-file (concat user-emacs-directory
+                          (setq smex-save-file (concat rmg:state-directory
                                                        "smex-items"))))
           (:name yasnippet
                  :after (progn
@@ -291,20 +312,23 @@
         vc-make-backup-files t; Make backups even when in git/svn/etc
         )
 
+  (setq tramp-backup-directory-alist backup-directory-alist)
+
   ;; Auto-save
   (make-directory (concat user-emacs-directory "auto-save/") t)
   (make-directory (concat user-emacs-directory "auto-save-list/") t)
   (setq auto-save-file-name-transforms
         `((".*" ,(concat user-emacs-directory "auto-save/") t)))
+  (setq tramp-auto-save-directory (concat user-emacs-directory "auto-save/"))
 
   ;; Save place
   (require 'saveplace)
   (setq-default save-place t)
-  (setq save-place-file (concat user-emacs-directory ".places"))
+  (setq save-place-file (concat rmg:state-directory "places"))
 
   ;; Tetris scores
-  (make-directory (concat user-emacs-directory "games/") t)
-  (setq tetris-score-file (concat user-emacs-directory "games/tetris-scores"))
+  (make-directory (concat rmg:state-directory "games/") t)
+  (setq tetris-score-file (concat rmg:state-directory "games/tetris-scores"))
 
   ;; Load eshell
   (require 'eshell)
@@ -445,6 +469,16 @@
 
   ;; Start the emacs server for emacsclient
   (server-start)
+
+  ;; Diminish global minor modes
+  (when (functionp 'diminish)
+    (defmacro rmg-diminish (mode &optional new-name)
+      `(when (assq ,mode minor-mode-alist)
+         (diminish ,mode ,new-name)))
+    (rmg-diminish 'auto-complete-mode)
+    (rmg-diminish 'global-whitespace-mode)
+    (rmg-diminish 'guide-key-mode)
+    (rmg-diminish 'yas-minor-mode))
 
 ;;; End
 )
