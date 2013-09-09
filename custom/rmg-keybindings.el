@@ -106,6 +106,12 @@
 (when (fboundp 'magit-status)
   (global-set-key (kbd "C-x C-z") 'magit-status))
 
+;; Shell
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (define-key shell-mode-map
+              (kbd "C-d") 'rmg-comint-delchar-or-eof-or-kill-buffer)))
+
 ;; Smart M-x
 (when (fboundp 'smex)
   ;; Use Steve Yegge's advice to use C-x C-m

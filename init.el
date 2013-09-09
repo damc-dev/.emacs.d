@@ -271,6 +271,13 @@
           (goto-line (read-number "Goto line: ")))
       (linum-mode -1)))
 
+  ;; Function to delete a character, or kill a process, or kill the buffer
+  (defun rmg-comint-delchar-or-eof-or-kill-buffer (arg)
+    (interactive "p")
+    (if (null (get-buffer-process (current-buffer)))
+        (kill-buffer)
+      (comint-delchar-or-maybe-eof arg)))
+
 ;;; General
   ;; Backup and saves
   (make-directory (concat user-emacs-directory "backup/") t)
