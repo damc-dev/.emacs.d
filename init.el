@@ -4,7 +4,7 @@
 
 ;;; Initialization Config
 (let ((rmg:indent-spaces 2)
-      (rmg:el-get-packages '(el-get)))
+      (rmg:el-get-packages '(el-get markdown-mode)))
 
 ;;; State file directory
   (setq rmg:state-directory (concat user-emacs-directory "state/"))
