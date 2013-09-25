@@ -1,7 +1,8 @@
 ;; Default font size in GUIs is 9pt
 (lexical-let ((rmg:font-height 90)
       (rmg:maximize-host-regexps '("reaper2.*"
-                                  "niub30")))
+                                   "niub30"
+                                   "wlvaio")))
 
   ;; Font size on reaper2 should be 11pt (higher density screen)
   (when (string-match "reaper2.*" (system-name))
