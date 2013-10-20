@@ -135,7 +135,8 @@
                                                                "C-x 4"
                                                                "C-x 5"
                                                                "C-x 6"
-                                                               "C-x 8"))
+                                                               "C-x 8"
+                                                               "C-c"))
 
                           ;; Show recursively
                           (setq guide-key/recursive-key-sequence-flag t)
