@@ -52,6 +52,8 @@
   (global-set-key (kbd "C-x f f") 'find-file-in-project)
   (global-set-key (kbd "C-x f o cc")
                   (ffip-create-pattern-file-finder "*.c" "*.cc" "*.h" "*.cpp"))
+  (global-set-key (kbd "C-x f o el")
+                  (ffip-create-pattern-file-finder "*.el"))
   (global-set-key (kbd "C-x f o ja")
                   (ffip-create-pattern-file-finder "*.java" "*.aidl"))
   (global-set-key (kbd "C-x f o js")
@@ -63,7 +65,9 @@
   (global-set-key (kbd "C-x f o sh")
                   (ffip-create-pattern-file-finder "*.sh"))
   (global-set-key (kbd "C-x f o tx")
-                  (ffip-create-pattern-file-finder "*.txt" "*.md")))
+                  (ffip-create-pattern-file-finder "*.txt" "*.md"))
+  (global-set-key (kbd "C-x f o xm")
+                  (ffip-create-pattern-file-finder "*.xml")))
 
 ;; Magit
 (when (fboundp 'magit-status)

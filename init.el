@@ -411,6 +411,10 @@
   ;; Apropos should cover everything
   (setq apropos-do-all t)
 
+  ;; Allow recursive minibuffers
+  (setq enable-recursive-minibuffers t)
+  (minibuffer-depth-indicate-mode 1)
+
   ;; UTF-8
   (set-language-environment 'utf-8)
   (prefer-coding-system 'utf-8)
