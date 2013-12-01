@@ -46,6 +46,25 @@
             (define-key ido-completion-map (kbd "C-p") 'ido-prev-match)))
 
 ;;; Conditional Keybindings
+;; Find file in project
+(when (fboundp 'find-file-in-project)
+  (global-unset-key (kbd "C-x f"))
+  (global-set-key (kbd "C-x f f") 'find-file-in-project)
+  (global-set-key (kbd "C-x f o cc")
+                  (ffip-create-pattern-file-finder "*.c" "*.cc" "*.h" "*.cpp"))
+  (global-set-key (kbd "C-x f o ja")
+                  (ffip-create-pattern-file-finder "*.java" "*.aidl"))
+  (global-set-key (kbd "C-x f o js")
+                  (ffip-create-pattern-file-finder "*.js"))
+  (global-set-key (kbd "C-x f o lu")
+                  (ffip-create-pattern-file-finder "*.lua"))
+  (global-set-key (kbd "C-x f o py")
+                  (ffip-create-pattern-file-finder "*.py"))
+  (global-set-key (kbd "C-x f o sh")
+                  (ffip-create-pattern-file-finder "*.sh"))
+  (global-set-key (kbd "C-x f o tx")
+                  (ffip-create-pattern-file-finder "*.txt" "*.md")))
+
 ;; Magit
 (when (fboundp 'magit-status)
   (global-set-key (kbd "C-x C-z") 'magit-status))

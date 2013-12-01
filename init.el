@@ -3,8 +3,7 @@
 ;; Emacks Rocks (emacsrocks.com)
 
 ;;; Initialization Config
-(let ((rmg:indent-spaces 2)
-      (rmg:el-get-packages '(el-get markdown-mode)))
+(let ((rmg:el-get-packages '(el-get markdown-mode google-c-style)))
 
 ;;; State file directory
   (setq rmg:state-directory (concat user-emacs-directory "state/"))
@@ -116,10 +115,16 @@
                                                   rename-modeline
                                                   activate)
                                   (setq mode-name ,new-name))))))
-          (:name google-c-style
+          (:name find-file-in-project
                  :after (progn
-                          ;; Auto-start google C style
-                          (add-hook 'c-mode-common-hook 'google-set-c-style)))
+                          ;; From http://whattheemacsd.com/key-bindings.el-04.html
+                          (defun ffip-create-pattern-file-finder (&rest
+                                                                  patterns)
+                            (lexical-let ((patterns patterns))
+                              (lambda ()
+                                (interactive)
+                                (let ((ffip-patterns patterns))
+                                  (find-file-in-project)))))))
           (:name guide-key
                  :website "https://github.com/kbkbkbkb1/guide-key#readme"
                  :type github
@@ -192,10 +197,6 @@
                           ;; Set all declaractions to pretty print
                           (setq-default js2-pretty-multiline-declarations 'all)
                           (setq js2-pretty-multiline-declarations 'all)
-
-                          ;; Default to 2 spaces
-                          (setq-default js2-basic-offset rmg:indent-spaces)
-                          (setq js2-basic-offset rmg:indent-spaces)
 
                           ;; Allow code folding on javascript
                           (add-hook 'js2-mode-hook
@@ -431,32 +432,15 @@
   ;; Transparently open compressed files
   (auto-compression-mode t)
 
-  ;; Never insert tabs automatically
-  (setq-default indent-tabs-mode nil)
-
-  ;; Default indent width
-  (setq default-tab-width rmg:indent-spaces)
-  (setq-default tab-width rmg:indent-spaces)
-
-  (setq-default c-basic-offset rmg:indent-spaces)
-  (setq c-basic-offset rmg:indent-spaces)
-
-  (setq css-indent-offset rmg:indent-spaces)
-
-  (setq-default sh-basic-offset rmg:indent-spaces)
-  (setq-default sh-indentation rmg:indent-spaces)
-
-  (setq-default perl-indent-level rmg:indent-spaces)
-  (setq-default python-indent-offset rmg:indent-spaces)
-
-  (setq-default js-indent-level rmg:indent-spaces)
-
   ;; Fill at 79, not 70
   (setq default-fill-column 79)
 
   ;; Middle click should paste at cursor position, not mouse position
   (when (display-mouse-p)
     (setq mouse-yank-at-point t))
+
+  ;; Set code style
+  (require 'rmg-code-style)
 
   ;; Load keybindings
   (require 'rmg-keybindings)
