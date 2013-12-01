@@ -214,6 +214,9 @@
                           ;; Save file
                           (setq smex-save-file (concat rmg:state-directory
                                                        "smex-items"))))
+          (:name undo-tree
+                 :after (progn
+                          (global-undo-tree-mode 1)))
           (:name yasnippet
                  :after (progn
                           ;; Shut up. Seriously. Wayyyyy too spammy
@@ -463,6 +466,7 @@
     (rmg-diminish 'auto-complete-mode)
     (rmg-diminish 'global-whitespace-mode)
     (rmg-diminish 'guide-key-mode)
+    (rmg-diminish 'undo-tree-mode)
     (rmg-diminish 'yas-minor-mode))
 
 ;;; End
