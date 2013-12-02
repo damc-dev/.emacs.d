@@ -29,7 +29,6 @@
     (add-hook 'c-mode-hook 'google-set-c-style)
     (add-hook 'c++-mode-hook 'google-set-c-style))
 
-
   ;; Set up java style
   (defconst rmg-java-style
     `("java"))

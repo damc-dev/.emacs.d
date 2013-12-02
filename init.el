@@ -125,6 +125,10 @@
                                 (interactive)
                                 (let ((ffip-patterns patterns))
                                   (find-file-in-project)))))))
+          (:name google-c-style
+                 :post-init (progn
+                              (add-hook 'c-mode-common-hook
+                                        'google-make-newline-indent)))
           (:name guide-key
                  :website "https://github.com/kbkbkbkb1/guide-key#readme"
                  :type github
@@ -403,6 +407,15 @@
   ;; Set unique file names to filename.txt<distinguishing/path/to>
   (require 'uniquify)
   (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
+  ;; Behavior settings for c-style languages
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              ;; Hide/show mode enabled
+              (hs-minor-mode 1)
+
+              ;; Kill all trailing whitespace when saving
+              (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
   ;; Pretty-print eval
   (global-set-key [remap eval-expression] 'pp-eval-expression)
