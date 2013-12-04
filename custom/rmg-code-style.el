@@ -34,6 +34,11 @@
     `("java"))
   (add-hook 'java-mode-hook
             (lambda ()
-              (c-add-style "rmg-java" rmg-java-style t))))
+              ;; Add custom style
+              (c-add-style "rmg-java" rmg-java-style t)
+
+              ;; Treat Java 1.5 @-style annotations as comments
+              (setq c-comment-start-regexp "\\(@\\|/\\(/\\|[*][*]?\\)\\)")
+              (modify-syntax-entry ?@ "< b" java-mode-syntax-table))))
 
 (provide 'rmg-code-style)
