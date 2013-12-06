@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: public static final String
+# key: psfs
+# --
+public static final String

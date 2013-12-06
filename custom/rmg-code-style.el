@@ -31,7 +31,8 @@
 
   ;; Set up java style
   (defconst rmg-java-style
-    `("java"))
+    `("java"
+      (c-offsets-alist . ((arglist-cont-nonempty . ++)))))
   (add-hook 'java-mode-hook
             (lambda ()
               ;; Add custom style
