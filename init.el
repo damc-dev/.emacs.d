@@ -125,7 +125,10 @@
                               (lambda ()
                                 (interactive)
                                 (let ((ffip-patterns patterns))
-                                  (find-file-in-project)))))))
+                                  (find-file-in-project)))))
+
+                          ;; Ignore files in path */build/* and */bin/*
+                          (setq ffip-find-options "-not -path \"*/build/*\" -not -path \"*/bin/*\"")))
           (:name google-c-style
                  :post-init (progn
                               (add-hook 'c-mode-common-hook
