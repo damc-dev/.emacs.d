@@ -36,7 +36,8 @@
         (url-retrieve-synchronously
          "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
       (goto-char (point-max))
-      (let (el-get-master-branch)
+      (let ((el-get-master-branch nil)
+            (el-get-git-install-url "https://github.com/dimitri/el-get.git"))
         (eval-print-last-sexp))))
 
   ;; el-get package directory
