@@ -36,6 +36,7 @@
                           (arglist-cont . 0)
                           (arglist-cont-nonempty . ++)
                           (arglist-close . 0)
+                          (case-label . +)
                           (inexpr-class . 0)))))
   (add-hook 'java-mode-hook
             (lambda ()
