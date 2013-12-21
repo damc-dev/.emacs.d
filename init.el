@@ -450,6 +450,14 @@
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
 
+  ;; The problem with auto-reverting buffers is sometimes emacs will repeatedly
+  ;; recenter the buffer... this should fix that
+  (defadvice recenter (around recenter-not-after-revert activate)
+  "Avoid recentering after reverting a buffer."
+  (if revert-buffer-in-progress-p
+      (message "Skipping recenter after revert.")
+    ad-do-it))
+
   ;; Don't use shift to mark things
   (setq shift-select-mode nil)
 
