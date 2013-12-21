@@ -8,6 +8,13 @@ The standard environment uses the following setup:
 1. [Ubuntu 12.04 LTS](http://www.ubuntu.com/)
 2. [Emacs 24.3](https://launchpad.net/~cassou/+archive/emacs)
 
+### Requirements
+
+The required packages need to be available:
+
+1. *make*: For building *magit*
+2. *texinfo*: For building *magit* documentation
+
 ## Acknowledgements
 
  * Panel layout setup inspired by

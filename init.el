@@ -44,6 +44,9 @@
   (setq-default el-get-user-package-directory (concat user-emacs-directory
                                                       "init-files/"))
 
+  ;; default to https with github
+  (setq el-get-github-default-url-type 'https)
+
   ;; custom recipes
   (setq el-get-sources
         '((:name auto-complete
@@ -130,6 +133,7 @@
                           ;; Ignore files in path */build/* and */bin/*
                           (setq ffip-find-options "-not -path \"*/build/*\" -not -path \"*/bin/*\"")))
           (:name google-c-style
+                 :url "https://google-styleguide.googlecode.com/svn/trunk/google-c-style.el"
                  :post-init (progn
                               (add-hook 'c-mode-common-hook
                                         'google-make-newline-indent)))
