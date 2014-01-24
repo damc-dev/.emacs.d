@@ -60,6 +60,8 @@
                   (ffip-create-pattern-file-finder "*.js"))
   (global-set-key (kbd "C-x f o lu")
                   (ffip-create-pattern-file-finder "*.lua"))
+  (global-set-key (kbd "C-x f o or")
+                  (ffip-create-pattern-file-finder "*.org"))
   (global-set-key (kbd "C-x f o py")
                   (ffip-create-pattern-file-finder "*.py"))
   (global-set-key (kbd "C-x f o sh")
