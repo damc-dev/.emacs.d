@@ -147,7 +147,8 @@
                           (require 'guide-key)
 
                           ;; Show guides for certain sets of key bind prefixes
-                          (setq guide-key/guide-key-sequence '("C-x r"
+                          (setq guide-key/guide-key-sequence '("C-x n"
+                                                               "C-x r"
                                                                "C-x v"
                                                                "C-x 4"
                                                                "C-x 5"
