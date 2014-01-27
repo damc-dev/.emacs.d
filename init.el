@@ -90,14 +90,14 @@
 
                           ;; Set default (see auto-complete)
                           (setq-default ac-sources ac-sources)))
-          (:name auto-complete-yasnippet
-                 :after (progn
-                          ;; Include yasnippet into autocomplete options
-                          (add-to-list 'ac-sources
-                                       'ac-source-yasnippet)
+          ;; (:name auto-complete-yasnippet
+          ;;        :after (progn
+          ;;                 ;; Include yasnippet into autocomplete options
+          ;;                 (add-to-list 'ac-sources
+          ;;                              'ac-source-yasnippet)
 
-                          ;; Set default (see auto-complete)
-                          (setq-default ac-sources ac-sources)))
+          ;;                 ;; Set default (see auto-complete)
+          ;;                 (setq-default ac-sources ac-sources)))
           (:name color-theme-twilight
                  :after (progn
                           (when (display-color-p)
@@ -168,6 +168,9 @@
                           ;; Enable guide-key mode
                           (guide-key-mode 1)))
           (:name ido-ubiquitous
+                 :website "https://github.com/DarwinAwardWinner/ido-ubiquitous"
+                 :type github
+                 :pkgname "DarwinAwardWinner/ido-ubiquitous"
                  :after (progn
                           ;; Auto-start ido-ubiquitous, which is only active
                           ;; when ido-mode is also active
