@@ -225,6 +225,19 @@
           ;;       :after (progn
           ;;                ;; Prevent node from using readline
           ;;                (setenv "NODE_NO_READLINE" "1")))
+          (:name org-mode
+                 :after (progn
+
+                          (require 'org-install)
+
+                          (setq org-todo-keywords
+                                '((sequence "TODO(t)"
+                                            "IN-PROGRESS(p)"
+                                            "WAITING(w)"
+                                            "|"
+                                            "DONE(d)")
+                                  (sequence "|"
+                                            "CANCELLED(c)")))))
           (:name smex
                  :after (progn
                           ;; Save file

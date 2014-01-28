@@ -75,12 +75,6 @@
 (when (fboundp 'magit-status)
   (global-set-key (kbd "C-x C-z") 'magit-status))
 
-;; Shell
-(add-hook 'shell-mode-hook
-          (lambda ()
-            (define-key shell-mode-map
-              (kbd "C-d") 'rmg-comint-delchar-or-eof-or-kill-buffer)))
-
 ;; Smart M-x
 (when (fboundp 'smex)
   ;; Use Steve Yegge's advice to use C-x C-m
@@ -96,6 +90,12 @@
   (global-set-key (kbd "<select>") 'move-end-of-line))
 
 ;;; Mode-specific keybindings
+;; Org-mode keys
+(when (fboundp 'org-add-hook)
+  (org-add-hook 'org-mode-hook (lambda ()
+                                 (define-key org-mode-map
+                                   (kbd "C-c a") 'org-agenda))))
+
 ;; Additional hideshow hotkeys
 (when (fboundp 'hs-minor-mode)
   (add-hook 'hs-minor-mode-hook (lambda ()
@@ -110,6 +110,13 @@
                                       (kbd "C-c h s") 'hs-show-block)
                                     (define-key hs-minor-mode-map
                                       (kbd "C-c h t") 'hs-toggle-hiding)))))
+
+;; Shell
+(add-hook 'shell-mode-hook
+          (lambda ()
+            (define-key shell-mode-map
+              (kbd "C-d") 'rmg-comint-delchar-or-eof-or-kill-buffer)))
+
 ;;; Mouse button removal
 ;; Remap to ignore
 (global-set-key [remap mouse-buffer-menu] 'ignore)
