@@ -227,17 +227,20 @@
           ;;                (setenv "NODE_NO_READLINE" "1")))
           (:name org-mode
                  :after (progn
-
                           (require 'org-install)
 
                           (setq org-todo-keywords
                                 '((sequence "TODO(t)"
-                                            "IN-PROGRESS(p)"
-                                            "WAITING(w)"
+                                            "IN-PROGRESS(p!)"
+                                            "WAITING(w!)"
                                             "|"
-                                            "DONE(d)")
+                                            "DONE(d@/!)")
                                   (sequence "|"
-                                            "CANCELLED(c)")))))
+                                            "CANCELLED(c@/!)")))
+
+                          (let ((rmg:mobile-org "~/Dropbox/OrgMode"))
+                            (when (file-accessible-directory-p rmg:mobile-org)
+                              (setq org-mobile-directory rmg:mobile-org)))))
           (:name smex
                  :after (progn
                           ;; Save file
@@ -272,7 +275,7 @@
                           (setq yas-prompt-functions '(yas-dropdown-prompt))))
           ))
 
-  ;; Don't load magit in w32
+  ;; Don't load some packages in win32
   (unless (equal (window-system) 'w32)
     (add-to-list 'el-get-sources
                  '(:name magit
@@ -284,7 +287,14 @@
                                   ;; Magit Projects
                                   (setq magit-repo-dirs `("~/Projects"
                                                           ,user-emacs-directory)
-                                        )))))
+                                        ))))
+
+    ;; Emacs Code Browser needs bzr in order to check out
+    (when (el-get-executable-find "bzr")
+      (add-to-list 'el-get-sources
+                   '(:name ecb
+                           :after (progn
+                                    )))))
 
 
   ;; Include local sources into rmg:el-get-packages
