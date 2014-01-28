@@ -238,9 +238,13 @@
                                   (sequence "|"
                                             "CANCELLED(c@/!)")))
 
-                          (let ((rmg:mobile-org "~/Dropbox/OrgMode"))
+                          (let ((rmg:mobile-org "~/Dropbox/MobileOrg"))
                             (when (file-accessible-directory-p rmg:mobile-org)
                               (setq org-mobile-directory rmg:mobile-org)))
+
+                          (let ((rmg:org-dir "~/Dropbox/OrgMode"))
+                            (when (file-accessible-directory-p rmg:org-dir)
+                              (setq org-directory rmg:org-dir)))
 
                           (setq org-agenda-window-setup 'current-window)
 
