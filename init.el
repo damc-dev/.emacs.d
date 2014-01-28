@@ -240,7 +240,18 @@
 
                           (let ((rmg:mobile-org "~/Dropbox/OrgMode"))
                             (when (file-accessible-directory-p rmg:mobile-org)
-                              (setq org-mobile-directory rmg:mobile-org)))))
+                              (setq org-mobile-directory rmg:mobile-org)))
+
+                          (setq org-agenda-window-setup 'current-window)
+
+                          (defadvice org-agenda (around
+                                                 org-agenda-in-rmg-temp-window
+                                                 activate)
+                            "Set org agenda to appear in custom window"
+                            (progn
+                              (when (window-live-p rmg-temporary-window-top)
+                                (select-window rmg-temporary-window-top t))
+                              ad-do-it))))
           (:name smex
                  :after (progn
                           ;; Save file
