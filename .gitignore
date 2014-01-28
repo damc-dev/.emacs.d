@@ -1,6 +1,11 @@
 # Ignore el-get (it will be downloaded/setup automatically)
 /el-get/*
 
+# Ignore backups
+/backup/*
+/auto-save/*
+/auto-save-list/*
+
 # Ignore compiled and generated files
 *.elc
 .yas-compiled-snippets.el
@@ -10,9 +15,7 @@
 /tramp
 /url/*
 /session.*
-
-# Ignore backups
-/backup/*
-/auto-save/*
-/auto-save-list/*
 /custom.el
+/.org-id-locations
+/*.before_ecb_2.40
+/srecode-map.el
