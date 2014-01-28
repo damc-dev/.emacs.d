@@ -250,7 +250,7 @@
                             "Set org agenda to appear in custom window"
                             (progn
                               (when (window-live-p rmg-temporary-window-top)
-                                (select-window rmg-temporary-window-top t))
+                                (select-window rmg-temporary-window-top))
                               ad-do-it))))
           (:name smex
                  :after (progn
