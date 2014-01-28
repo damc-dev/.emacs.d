@@ -75,6 +75,12 @@
 (when (fboundp 'magit-status)
   (global-set-key (kbd "C-x C-z") 'magit-status))
 
+;; Org-mode keys
+(when (fboundp 'org-agenda)
+  (global-set-key (kbd "C-x C-a") 'org-agenda))
+(when (fboundp 'org-store-link)
+  (global-set-key (kbd "C-c l") 'org-store-link))
+
 ;; Smart M-x
 (when (fboundp 'smex)
   ;; Use Steve Yegge's advice to use C-x C-m
@@ -90,12 +96,6 @@
   (global-set-key (kbd "<select>") 'move-end-of-line))
 
 ;;; Mode-specific keybindings
-;; Org-mode keys
-(when (fboundp 'org-add-hook)
-  (org-add-hook 'org-mode-hook (lambda ()
-                                 (define-key org-mode-map
-                                   (kbd "C-c a") 'org-agenda))))
-
 ;; Additional hideshow hotkeys
 (when (fboundp 'hs-minor-mode)
   (add-hook 'hs-minor-mode-hook (lambda ()
