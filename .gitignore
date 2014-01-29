@@ -17,5 +17,5 @@
 /session.*
 /custom.el
 /.org-id-locations
-/*.before_ecb_2.40
+/*.before_ecb_2.40*
 /srecode-map.el
