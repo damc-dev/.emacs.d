@@ -305,7 +305,9 @@
                                         ))))
 
     ;; Emacs Code Browser needs bzr in order to check out
-    (when (el-get-executable-find "bzr")
+    (when (condition-case nil
+              (el-get-executable-find "bzr")
+            (error nil))
       (add-to-list 'el-get-sources
                    '(:name ecb
                            :after (progn
