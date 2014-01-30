@@ -500,11 +500,14 @@
 
   ;; The problem with auto-reverting buffers is sometimes emacs will repeatedly
   ;; recenter the buffer... this should fix that
-  (defadvice recenter (around recenter-not-after-revert activate)
-  "Avoid recentering after reverting a buffer."
-  (if revert-buffer-in-progress-p
-      (message "Skipping recenter after revert.")
-    ad-do-it))
+  (defcustom rmg-message-on-revert-recenter nil
+    "When non-nil, this will message each time a revert attempts to recenter.")
+  (defadvice recenter (around rmg-recenter-not-after-revert activate)
+    "Avoid recentering after reverting a buffer."
+    (if revert-buffer-in-progress-p
+        (when rmg-message-on-revert-recenter
+          (message "Skipping recenter after revert."))
+      ad-do-it))
 
   ;; Don't use shift to mark things
   (setq shift-select-mode nil)
@@ -528,7 +531,7 @@
   ;; Use y-or-n-p instead of yes-or-no-p
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; Don't use this init.el for customizations
+  ;; Don't use this init.el for customizations; instead use custom.el
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (load custom-file 'noerror)
 
