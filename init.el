@@ -292,17 +292,22 @@
 
   ;; Don't load some packages in win32
   (unless (equal (window-system) 'w32)
-    (add-to-list 'el-get-sources
-                 '(:name magit
-                         :after (progn
-                                  ;; Use ido for magit
-                                  (setq magit-completing-read-function
-                                        'magit-ido-completing-read)
+    ;; Magit needs texinfo and make
+    (when (condition-case nil
+              (and (el-get-executable-find "make")
+                   (el-get-executable-find "makeinfo"))
+            (error nil))
+      (add-to-list 'el-get-sources
+                   '(:name magit
+                           :after (progn
+                                    ;; Use ido for magit
+                                    (setq magit-completing-read-function
+                                          'magit-ido-completing-read)
 
-                                  ;; Magit Projects
-                                  (setq magit-repo-dirs `("~/Projects"
-                                                          ,user-emacs-directory)
-                                        ))))
+                                    ;; Magit Projects
+                                    (setq magit-repo-dirs
+                                          `("~/Projects"
+                                            ,user-emacs-directory))))))
 
     ;; Emacs Code Browser needs bzr in order to check out
     (when (condition-case nil
