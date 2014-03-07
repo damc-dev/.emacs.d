@@ -10,8 +10,8 @@
   (make-directory rmg:state-directory t)
 
 ;;; User info
-  (setq user-full-name "Robert Grimm"
-        user-mail-address (rot13 "tevzz.ebo@tznvy.pbz"))
+  (setq user-full-name "David McElligott"
+        user-mail-address (rot13 "qnzp.qri@tznvy.pbz"))
 
 ;;; Package Installation Setup
   ;; Store cookies in state
